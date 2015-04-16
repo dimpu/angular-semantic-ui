@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html ng-app="DateTimePickerApp">
+  <head>
+    <meta charset="utf-8" />
+    <title>Semantic UI + Angular.JS</title>
+    <link href="../../../bower_components/semantic/dist/semantic.min.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body ng-controller="RootCtrl">
+    <div class="ui two column centered grid">
+
+
+      <div class="row">
+        <div class="column">
+          <div class="ui form">
+              
+              <datetimepicker
+                data-ng-model="dDate">
+              </datetimepicker>
+
+              
+
+
+          </div>
+        </div>
+      </div>
+
+
+
+
+<!-- 
+      <div class="row">
+        <div class="column">
+          <div class="ui form">
+            <div class="field">
+              <div class="ui action input">
+                <input type="text" placeholder="pick c" data-ng-model="dDate">
+                <div class="ui icon button picker_btn">
+                  <i class="calendar icon"></i>
+                </div>
+              </div>
+            <div class="picker transition visible">
+              <datetimepicker
+              data-ng-model="dDate">
+              </datetimepicker>    
+            </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+     
+
+
+    </div>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../../../bower_components/semantic/dist/semantic.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.min.js"></script>
+    
+    <script src="../../../bower_components/angular/angular.min.js" type="text/javascript"></script>
+    <script src="../../angularify.semantic.js" type="text/javascript"></script>
+    <script src="../../datetimepicker/datetimepicker.js" type="text/javascript"></script>
+    <script src="controllers.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    $(function(){
+      $('.dropdown').dropdown();
+      $('.picker_btn').on('click',function(){
+        $('.picker').transition('swing down');
+      });
+    });
+
+    </script>
+  </body>
+</html>
