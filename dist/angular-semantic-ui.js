@@ -6,7 +6,9 @@ angular.module('angularify.semantic', ['angularify.semantic.accordion',
 	                                   'angularify.semantic.popup',
 	                                   'angularify.semantic.rating',
 	                                   'angularify.semantic.sidebar',
-	                                   'angularify.semantic.wizard']);
+	                                   'angularify.semantic.wizard',
+	                                   'angularify.semantic.common',
+	                                   'angularify.semantic.datetimepicker']);
 
 'use strict';
 
