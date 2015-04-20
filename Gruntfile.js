@@ -27,6 +27,8 @@ module.exports = function(grunt) {
                     'src/sidebar/sidebar.js',
                     'src/rating/rating.js',
                     'src/wizard/wizard.js',
+                    'src/common/common.js',
+                    'src/datetimepicker/datetimepicker.js',
                 ],
                 dest: '<%= dist %>/<%= filename %>.js'
             }
