@@ -4,7 +4,7 @@ angular.module('angularify.semantic.datetimepicker', [])
   .constant('dateTimePickerConfig', {
     dropdownSelector: null,
     minuteStep: 5,
-    minView: 'minute',
+    minView: 'day',
     startView: 'day'
   })
   .directive('datetimepicker', ['dateTimePickerConfig', function (defaultConfig) {
@@ -289,7 +289,7 @@ angular.module('angularify.semantic.datetimepicker', [])
             var tempDate = new Date(unixDate);
             var newDate = new Date(tempDate.getTime() + (tempDate.getTimezoneOffset() * 60000));
 
-            scope.ngModel = newDate;
+            scope.ngModel = moment(newDate).format('YYYY-MM-DD');
 
             if (configuration.dropdownSelector) {
               jQuery(configuration.dropdownSelector).dropdown('toggle');

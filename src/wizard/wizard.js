@@ -5,50 +5,22 @@ angular.module('angularify.semantic.wizard', [])
 .controller('WizardController', ['$scope',
     function($scope) {
         $scope.steps = [];
-        $scope.currentStep = null;
-        $scope.stepsLength = '';
-        
-        $scope.$watch('currentStep', function (step) {
-            if (!step) return;
-            var stepTitle = $scope.selectedStep.title;
-            if ($scope.selectedStep && stepTitle !== $scope.currentStep) {
-                $scope.goTo($scope.steps.filter(function (step) {
-                    return step.title ==- $scope.currentStep;
-                })[0]);
-            }
-        });
-
-        $scope.$watch('[editMode, steps.length]', function () {
-            var editMode = $scope.editMode;
-            if (editMode === undefined || editMode === null) return;
-
-            if (editMode) {
-                $scope.steps.forEach(function (step) {
-                    step.completed = true;
-                });
-            }
-        }, true);
-
+        this.getSetpsLength = function(){
+            return $scope.steps.length;
+        };
         this.addStep = function (step) {
             $scope.steps.push(step);
             if ($scope.steps.length === 1) {
                 $scope.goTo($scope.steps[0]);
+            }else{
+                $scope.goTo($scope.steps[$scope.currentStepIndex]);
             }
         };
 
         $scope.goTo = function (step) {
             unselectAll();
             $scope.selectedStep = step;
-          
-            if ($scope.currentStep !== undefined) {
-                $scope.currentStep = step.title;
-            }
-          
             step.selected = true;
-            $scope.$emit('wizard:stepChanged', {
-                step: step,
-                index: $scope.steps.indexOf(step)
-            });
         };
 
         function unselectAll() {
@@ -99,14 +71,12 @@ angular.module('angularify.semantic.wizard', [])
 
         $scope.getStatus = function (step) {
           var statusClass = [];
-            
           if (step.selected)
             statusClass.push('active');
           if (!step.selected && !step.completed)
             statusClass.push('disabled');
           if (step.completed)
             statusClass.push('completed');
-
           return statusClass;
         };
     }
@@ -117,15 +87,11 @@ angular.module('angularify.semantic.wizard', [])
             replace: true,
             transclude: true,
             scope: {
-                fullwidth: "@",
-                currentStep: '=?',
-                onFinish: '&',
-                editMode: '=',
-                name: '@'
+                currentStepIndex:'=',
             },
             controller: 'WizardController',
             template: '<div>' + 
-                        '<div class="ui steps {{stepsLength}} small">' + 
+                        '<div class="ui steps small">' + 
                           '<div class="ui step" ng-repeat="step in steps" ng-click="step.completed && goTo(step)" ng-class="getStatus(step)">' + 
                             '{{step.title}}' + 
                           '</div>' + 
@@ -134,23 +100,7 @@ angular.module('angularify.semantic.wizard', [])
                         '<div ng-transclude></div>' + 
                       '</div>',
             link: function(scope, element, attrs, WizardController) {
-                if (scope.fullwidth === 'true') {
-                    var widthmatrix = {
-                        0: '',
-                        1: 'one',
-                        2: 'two',
-                        3: 'three',
-                        4: 'four',
-                        5: 'five',
-                        6: 'six',
-                        7: 'seven',
-                        8: 'eight',
-                        9: 'nine',
-                        10: 'ten'
-                    };
-                    scope.stepsLength = widthmatrix[scope.steps.length];
-                }
-
+                //link function
             }
         };
     })
@@ -166,6 +116,7 @@ angular.module('angularify.semantic.wizard', [])
             },
             template: '<div class="ui segment" ng-transclude ng-show="selected" ng-style="noMargin"></div>',
             link: function(scope, element, attrs, WizardController) {
+
                 WizardController.addStep(scope);
             }
         };
@@ -179,6 +130,9 @@ function wizardButtonDirective(action) {
                 replace: false,
                 require: '^wizard',
                 link: function ($scope, $element, $attrs, wizard) {
+                    if(action == "wzPrevious" && wizard.getSetpsLength() <=0){
+                        $element.hide();
+                    }
                     $scope.noMargin = { margin: 0 };
                     $element.on('click', function (e) {
                         e.preventDefault();

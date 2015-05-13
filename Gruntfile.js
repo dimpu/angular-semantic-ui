@@ -20,6 +20,7 @@ module.exports = function(grunt) {
                 src: ['src/angularify.semantic.js',
                     'src/accordion/accordion.js',
                     'src/checkbox/checkbox.js',
+                    'src/radio/radio.js',
                     'src/dimmer/dimmer.js',
                     'src/dropdown/dropdown.js',
                     'src/modal/modal.js',

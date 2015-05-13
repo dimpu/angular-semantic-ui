@@ -8,84 +8,38 @@ angular.module('angularify.semantic.checkbox', [])
         replace: true,
         transclude: true,
         scope :{
-            type: "@",
-            size: "@",
-            checked: "@",
+            variant: "@",
+            trueValue:'@',
+            falseValue:'@',
             model: '=ngModel'
         },
-        template: "<div class=\"{{checkbox_class}}\">" +
-                    "<input type=\"checkbox\">"        +
-                    "<label ng-click=\"click_on_checkbox()\" ng-transclude></label>" +
-                    "</div>",
-        link: function(scope, element, attrs, ngModel) {
-
-            //
-            // set up checkbox class and type
-            //
-            if (scope.type == 'standard' || scope.type == undefined){
-                scope.type = 'standard';
-                scope.checkbox_class = 'ui checkbox';
-            } else if (scope.type == 'slider'){
-                scope.type = 'slider';
-                scope.checkbox_class = 'ui slider checkbox';
-            } else if (scope.type == 'toggle'){
-                scope.type = 'toggle';
-                scope.checkbox_class = 'ui toggle checkbox';
-            } else {
-                scope.type = 'standard';
-                scope.checkbox_class = 'ui checkbox';
-            }
-
-            //
-            // set checkbox size
-            //
-            if (scope.size == 'large'){
-                scope.checkbox_class = scope.checkbox_class + ' large';
-            } else if (scope.size == 'huge') {
-                scope.checkbox_class = scope.checkbox_class + ' huge';
-            }
-
-            //
-            // set checked/unchecked
-            //
-            if (scope.checked == 'false' || scope.checked == undefined) {
-                scope.checked = false;
-            } else {
-                scope.checked = true;
-                element.children()[0].setAttribute('checked', '');
-            }
-
+        template: '<div class="ui checkbox" data-ng-class="variant">' +
+                    '<input type="checkbox">'        +
+                    '<label ng-click="click_on_checkbox()" ng-transclude></label>' +
+                    '</div>',
+        link: function(scope, ele, attrs, ngModel) {
+            scope.checked =   !!scope.checked;
             //
             // Click handler
             //
-            element.bind('click', function () {
+            ele.on('click', function () { 
                 scope.$apply(function() {
-                    if (scope.checked == true){
-                        scope.checked = true;
+                    if (scope.checked){ 
                         scope.model   = false;
-                        element.children()[0].removeAttribute('checked');
+                        if(scope.falseValue){
+                            scope.model= scope.falseValue;
+                        }
+                        ele.children()[0].removeAttribute('checked');
                     } else {
-                        scope.checked = true;
+                        console.log('flase');
                         scope.model   = true;
-                        element.children()[0].setAttribute('checked', 'true');
+                        if(scope.trueValue){
+                            scope.model= scope.trueValue;
+                        }
+                        ele.children()[0].setAttribute('checked', 'true');
                     }
+                    scope.checked = !scope.checked;
                 })
-            });
-
-            //
-            // Watch for ng-model
-            //
-            scope.$watch('model', function(val){
-                if (val == undefined)
-                    return;
-
-                if (val == true){
-                    scope.checked = true;
-                    element.children()[0].setAttribute('checked', 'true');
-                } else {
-                    scope.checked = false;
-                    element.children()[0].removeAttribute('checked');
-                }
             });
         }
     }
